@@ -1,13 +1,9 @@
 class Keyboard
 {
-	private keys:Map<Keys, boolean> = new Map<Keys, boolean>();
+	private keys:Map<Key, boolean> = new Map<Key, boolean>();
 
 	constructor()
 	{
-		this.keys.set(Keys.LEFT, false);
-		this.keys.set(Keys.UP, false);
-		this.keys.set(Keys.RIGHT, false);
-		this.keys.set(Keys.DOWN, false);
 		window.addEventListener("keydown", this.onKeyEvent);
 		window.addEventListener("keyup", this.onKeyEvent);
 	}
@@ -16,12 +12,21 @@ class Keyboard
 	{
 		this.keys.set(e.keyCode, e.type == "keydown");
 	}
+
+	public isKeyDown(key:Key)
+	{
+		return (this.keys.get(key));
+	}
 }
 
-enum Keys
+enum Key
 {
 	LEFT = 37,
 	UP = 38,
 	RIGHT = 39,
-	DOWN = 40
+	DOWN = 40,
+	Q = 81,
+	Z = 90,
+	D = 68,
+	S = 83
 }
