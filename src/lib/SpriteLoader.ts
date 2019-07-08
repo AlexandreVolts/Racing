@@ -19,4 +19,9 @@ class SpriteLoader
 		if (this.len <= 0)
 			this.callback();
 	}
+
+	public get(path:string):Spritesheet
+	{
+		return (this.spritesheets.get(path));
+	}
 }
