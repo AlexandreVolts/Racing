@@ -1,10 +1,12 @@
 class Game
 {
+	private camera:Camera = new Camera();
 	private canvas:HTMLCanvasElement;
-	private ctx:CanvasRenderingContext2D;
 	private clock:Clock = new Clock();
+	private ctx:CanvasRenderingContext2D;
 	private keyboard:Keyboard = new Keyboard();
-	private player:Player;
+	private player:Spritesheet;
+	private road:Road = new Road();
 	private spriteLoader:SpriteLoader;
 	
 	constructor(canvas:HTMLCanvasElement)
@@ -16,22 +18,32 @@ class Game
 
 	private initialise = ():void =>
 	{
-		this.player = new Player(this.spriteLoader.get("assets/daisy.png"));
+		this.player = this.spriteLoader.get("assets/daisy.png");
 		this.render();
 	}
-	private update = (delta:number):void =>
+	private update(delta:number):void
 	{
-		let dx:number = delta * 2 * (this.player.getSpeed() / Utils.MAX_SPEED);
+		let dx:number = delta * 2 * (this.camera.getSpeed() / Utils.MAX_SPEED);
 		let speedVariation:number = (-Utils.ACCELERATION);
 
-		this.player.moveX(0);
-		if (this.keyboard.isKeyDown(Key.LEFT))
-			this.player.moveX(-dx);
-		if (this.keyboard.isKeyDown(Key.RIGHT))
-			this.player.moveX(dx);
+		this.player.setState(0);
+		this.player.reverse(this.keyboard.isKeyDown(Key.LEFT));
+		if (this.keyboard.isKeyDown(Key.LEFT)) {
+			this.camera.moveHorizontally(-dx);
+			this.player.setState(1);
+		}
+		if (this.keyboard.isKeyDown(Key.RIGHT)) {
+			this.player.setState(1);
+		}
 		speedVariation = this.keyboard.isKeyDown(Key.UP) ? Utils.ACCELERATION : speedVariation;
 		speedVariation = this.keyboard.isKeyDown(Key.DOWN) ? Utils.BREAKING : speedVariation;
-		this.player.updateSpeed(speedVariation * delta);
+		this.camera.updateSpeed(speedVariation * delta);
+	}
+	private renderPlayer():void
+	{
+		let bouncing:number = -1 + Math.random() * 2;
+		
+		this.player.draw(this.ctx, new Vector2(200, 200 + bouncing), new Vector2(100, 100));
 	}
 	private render = ():void =>
 	{
@@ -39,7 +51,8 @@ class Game
 
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		this.update(delta);
-		this.player.draw(this.ctx);
+		this.road.draw(this.ctx, this.camera);
+		this.renderPlayer();
 		this.clock.restart();
 		window.requestAnimationFrame(this.render);
 	}
