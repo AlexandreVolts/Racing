@@ -1,5 +1,6 @@
 class Game
 {
+	private camera:Camera = new Camera();
 	private canvas:HTMLCanvasElement;
 	private clock:Clock = new Clock();
 	private ctx:CanvasRenderingContext2D;
@@ -22,7 +23,8 @@ class Game
 	}
 	private update(delta:number):void
 	{
-
+		this.camera.moveForward(delta);
+		this.road.project(this.camera);
 	}
 	private render = ():void =>
 	{

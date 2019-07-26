@@ -1,6 +1,41 @@
-abstract class Camera
+/// <reference path="Utils.ts" />
+
+class Camera
 {
-	public static readonly HEIGHT:number = 50;
-	public static readonly FOV:number = 85;
-	public static readonly DEPTH:number = 1 / Math.tan(Camera.FOV / 2);
+	public static readonly HEIGHT:number = 1000;
+	public static readonly FOV:number = 45;
+	public static readonly FOCAL_LENGTH:number = 1 / Math.tan(Utils.toRadians(Camera.FOV) / 2);
+	private position:Vector3 = new Vector3(0, Camera.HEIGHT, 0);
+	private zSpeed:number = 100;
+
+	constructor()
+	{
+	}
+
+	public moveForward(delta:number):void
+	{
+		this.position.z += this.zSpeed * delta;
+	}
+	public projectPoint(point:Vector3, target:Vector2 = new Vector2()):Vector2
+	{
+		let perspective:number = Camera.FOCAL_LENGTH / (point.z - this.position.z);
+		
+		target.x = point.x + this.position.x;
+		target.y = point.y + this.position.y;
+		if (perspective < 0)
+			perspective = 1;
+		return (target.scale(perspective, true));
+	}
+	public projectShape(points:Array<Vector3>, target:Array<Vector2>):void
+	{
+		if (points.length < target.length)
+			return;
+		for (let i:number = points.length - 1; i >= 0; i--) {
+			this.projectPoint(points[i], target[i]);
+		}
+	}
+	public getPosition():Vector3
+	{
+		return (this.position);
+	}
 }

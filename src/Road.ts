@@ -3,16 +3,14 @@ class Road
 	private static readonly WIDTH:number = 2000;
 	private static readonly LENGTH:number = 500;
 	private static readonly RUMBLE_LENGTH:number = 3;
-	private static readonly VISIBILITY:number = 5 * Road.RUMBLE_LENGTH;
+	private static readonly VISIBILITY:number = 50 * Road.RUMBLE_LENGTH;
 	private segments:Array<Segment> = new Array<Segment>();
+	private current:number = 0;
 
 	constructor()
 	{
-		let color:string;
-
 		for (let i:number = 0; i < Road.LENGTH; i++) {
-			color = (~~(i / Road.RUMBLE_LENGTH) % 2 == 0) ? "gray" : "darkgray";
-			this.segments.push(new Segment(i, color));
+			this.segments.push(new Segment(i));
 		}
 	}
 
@@ -21,11 +19,17 @@ class Road
 		return (~~(z / Segment.DEPTH) % this.segments.length);
 	}
 	
-	public draw(ctx:CanvasRenderingContext2D)
+	public draw(ctx:CanvasRenderingContext2D):void
 	{
-		for (let i:number = this.segments.length - 1; i >= 0; i--) {
-			this.segments[i].project();
-			this.segments[i].draw(ctx);
+		for (let i:number = 0; i < Road.VISIBILITY; i++) {
+			this.segments[(this.current + i) % this.segments.length].draw(ctx);
+		}
+	}
+	public project(camera:Camera):void
+	{
+		this.current = this.getSegmentIndex(camera.getPosition().z);
+		for (let i:number = 0; i < Road.VISIBILITY; i++) {
+			this.segments[(this.current + i) % this.segments.length].project(camera);
 		}
 	}
 }
