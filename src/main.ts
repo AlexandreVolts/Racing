@@ -9,10 +9,12 @@ function createCanvas():HTMLCanvasElement
 
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	canvas.getContext("2d").translate(canvas.width / 2, canvas.height / 2);
 	window.addEventListener("resize", () =>
 	{
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
+		canvas.getContext("2d").translate(canvas.width / 2, canvas.height / 2);
 	});
 	return (canvas);
 }

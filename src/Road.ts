@@ -18,39 +18,14 @@ class Road
 
 	private getSegmentIndex(z:number):number
 	{
-		return (~~(z / Segment.SIZE) % this.segments.length);
+		return (~~(z / Segment.DEPTH) % this.segments.length);
 	}
 	
-	public draw(ctx:CanvasRenderingContext2D, camera:Camera)
+	public draw(ctx:CanvasRenderingContext2D)
 	{
-		let cameraPosition:Vector3 = camera.getPosition();
-		let start:number = this.getSegmentIndex(camera.getPosition().z);
-
-		cameraPosition.z *= Road.WIDTH;
-		for (let i:number = start; i < start + Road.VISIBILITY; i++) {
-			this.segments[i].draw(ctx, cameraPosition);
+		for (let i:number = this.segments.length - 1; i >= 0; i--) {
+			this.segments[i].project();
+			this.segments[i].draw(ctx);
 		}
-	}
-}
-
-class Segment
-{
-	public static readonly SIZE:number = 200;
-	private start:Vector3 = new Vector3();
-	private end:Vector3 = new Vector3();
-	public readonly COLOR:string;
-
-	constructor(index:number, color:string)
-	{
-		this.start.z = index * Segment.SIZE;
-		this.end.z = this.start.z + Segment.SIZE;
-		this.COLOR = color;
-	}
-
-	public draw(ctx:CanvasRenderingContext2D, cameraPosition:Vector3)
-	{
-		let screenSize:Vector2 = new Vector2(window.innerWidth, window.innerHeight);
-		let p1:Vector2 = Utils.project(this.start, cameraPosition, screenSize);
-		let p2:Vector2 = Utils.project(this.end, cameraPosition, screenSize);
 	}
 }

@@ -9,7 +9,7 @@ class SpriteLoader
 		this.callback = callback;
 		this.len = paths.length - 1;
 		for (let i:number = this.len; i >= 0; i--) {
-			this.spritesheets.set(paths[i], new Spritesheet(paths[i], this.load))
+			this.spritesheets.set(paths[i], new Spritesheet(paths[i], this.load));
 		}
 	}
 

@@ -1,8 +1,10 @@
 class Spritesheet
 {
+	public position:Vector2 = new Vector2();
+	public size:Vector2 = new Vector2();
 	private img:HTMLImageElement;
 	private onLoad:Function;
-	private size:Vector2 = new Vector2();
+	private imgSize:Vector2 = new Vector2();
 	private state:number = 0;
 	private isReversed:boolean = false;
 	
@@ -16,7 +18,7 @@ class Spritesheet
 
 	private load = () =>
 	{
-		this.size = new Vector2(this.img.width, this.img.height);
+		this.imgSize = new Vector2(this.img.width, this.img.height);
 		this.onLoad();
 	}
 
@@ -24,17 +26,17 @@ class Spritesheet
 	{
 		this.isReversed = isReversed;
 	}
-	public draw(ctx:CanvasRenderingContext2D, pos:Vector2, size:Vector2)
+	public draw(ctx:CanvasRenderingContext2D)
 	{
-		let width:number = (this.size.x / 12);
+		let width:number = (this.imgSize.x / 12);
 
 		ctx.save();
 		if (this.isReversed)
-			pos.x += size.x;
-		ctx.translate(pos.x, pos.y);
+			this.position.x += this.size.x;
+		ctx.translate(this.position.x, this.position.y);
 		if (this.isReversed)
 			ctx.scale(-1, 1);
-		ctx.drawImage(this.img, this.state * width, 0, width, this.size.y, 0, 0, size.x, size.y);
+		ctx.drawImage(this.img, this.state * width, 0, width, this.imgSize.y, 0, 0, this.size.x, this.size.y);
 		ctx.restore();
 	}
 	public setState(state:number)

@@ -4,3 +4,7 @@ html, body
 	padding: 0;
 	overflow: hidden;
 }
+
+canvas {
+	background-image: linear-gradient(cyan, rgb(0, 64, 0));
+}

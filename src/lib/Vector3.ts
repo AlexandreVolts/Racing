@@ -8,16 +8,28 @@ class Vector3 extends Vector2
 		this.z = z;
 	}
 
-	public add(vector:Vector3):Vector3
+	public add(vector:Vector3, apply:boolean = false):Vector3
 	{
-		super.add(vector);
+		if (!apply)
+			return (new Vector3(this.x + vector.x, this.y + vector.y, this.z + vector.z));
+		super.add(vector, true);
 		this.z += vector.z;
 		return (this);
 	}
-	public substract(vector:Vector3):Vector3
+	public subtract(vector:Vector3, apply:boolean = false):Vector3
 	{
-		super.substract(vector);
+		if (!apply)
+			return (new Vector3(this.x - vector.x, this.y - vector.y, this.z - vector.z));
+		super.subtract(vector, true);
 		this.z -= vector.z;
+		return (this);
+	}
+	public scale(n:number, apply:boolean = false):Vector3
+	{
+		if (!apply)
+			return (new Vector3(this.x * n, this.y * n, this.z * n));
+		super.scale(n, true);
+		this.z *= n;
 		return (this);
 	}
 }
