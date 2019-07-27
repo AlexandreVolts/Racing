@@ -23,6 +23,10 @@ class Game
 	}
 	private update(delta:number):void
 	{
+		if (this.keyboard.isKeyDown(Key.UP))
+			this.camera.accelerate(delta);
+		if (this.keyboard.isKeyDown(Key.DOWN))
+			this.camera.break(delta);
 		this.camera.moveForward(delta);
 		this.road.project(this.camera);
 	}

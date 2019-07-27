@@ -26,6 +26,10 @@ class Vector2
 		this.y += vector.y;
 		return (this);
 	}
+	public clone():Vector2
+	{
+		return (new Vector2(this.x, this.y));
+	}
 	public subtract(vector:Vector2, apply:boolean = false):Vector2
 	{
 		if (!apply)

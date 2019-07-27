@@ -1,8 +1,8 @@
 class Road
 {
-	private static readonly WIDTH:number = 2000;
-	private static readonly LENGTH:number = 500;
-	private static readonly RUMBLE_LENGTH:number = 3;
+	public static readonly WIDTH:number = 2000 * 2;
+	public static readonly RUMBLE_LENGTH:number = 3;
+	private static readonly LENGTH:number = 250;
 	private static readonly VISIBILITY:number = 50 * Road.RUMBLE_LENGTH;
 	private segments:Array<Segment> = new Array<Segment>();
 	private current:number = 0;

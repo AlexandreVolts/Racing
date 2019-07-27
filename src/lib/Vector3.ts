@@ -16,6 +16,10 @@ class Vector3 extends Vector2
 		this.z += vector.z;
 		return (this);
 	}
+	public clone():Vector3
+	{
+		return (new Vector3(this.x, this.y, this.z));
+	}
 	public subtract(vector:Vector3, apply:boolean = false):Vector3
 	{
 		if (!apply)

@@ -24,4 +24,8 @@ class Quadrilateral
 	{
 		camera.projectShape(this.points, this.projection);
 	}
+	public getPosition():Vector3
+	{
+		return (this.points[0]);
+	}
 }
