@@ -19,6 +19,7 @@ class Spritesheet
 	private load = () =>
 	{
 		this.imgSize = new Vector2(this.img.width, this.img.height);
+		this.size = this.imgSize.clone();
 		this.onLoad();
 	}
 
@@ -33,7 +34,7 @@ class Spritesheet
 		ctx.save();
 		if (this.isReversed)
 			this.position.x += this.size.x;
-		ctx.translate(this.position.x, this.position.y);
+		ctx.translate(this.position.x - this.size.x / 2, this.position.y - this.size.y / 2);
 		if (this.isReversed)
 			ctx.scale(-1, 1);
 		ctx.drawImage(this.img, this.state * width, 0, width, this.imgSize.y, 0, 0, this.size.x, this.size.y);

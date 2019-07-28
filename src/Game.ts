@@ -5,7 +5,7 @@ class Game
 	private clock:Clock = new Clock();
 	private ctx:CanvasRenderingContext2D;
 	private keyboard:Keyboard = new Keyboard();
-	private player:Spritesheet;
+	private player:Player;
 	private road:Road = new Road();
 	private spriteLoader:SpriteLoader;
 	
@@ -13,31 +13,42 @@ class Game
 	{
 		this.canvas = canvas;
 		this.ctx = canvas.getContext("2d");
+		this.ctx.imageSmoothingEnabled = false;
+		this.camera.setKeyboard(this.keyboard);
 		this.spriteLoader = new SpriteLoader(["assets/daisy.png"], this.initialise);
 	}
 
 	private initialise = ():void =>
 	{
-		this.player = this.spriteLoader.get("assets/daisy.png");
+		this.player = new Player(this.spriteLoader.get("assets/daisy.png"));
 		this.render();
 	}
 	private update(delta:number):void
 	{
-		if (this.keyboard.isKeyDown(Key.UP))
-			this.camera.accelerate(delta);
-		if (this.keyboard.isKeyDown(Key.DOWN))
-			this.camera.break(delta);
-		this.camera.moveForward(delta);
+		let dir:number = 0;
+		
+		dir += this.keyboard.isKeyDown(Key.LEFT) ? -1 : 0;
+		dir += this.keyboard.isKeyDown(Key.RIGHT) ? 1 : 0;
+		this.camera.moveHorizontally(delta, dir);
+		this.camera.update(delta);
 		this.road.project(this.camera);
+		this.player.turn(dir);
+		this.player.move(this.camera);
+		this.player.project(this.camera);
+	}
+	private draw():void
+	{
+		this.ctx.fillStyle = "rgb(0, 128, 0)";
+		this.ctx.fillRect(-this.canvas.width / 2, 0, this.canvas.width, this.canvas.height);
+		this.road.draw(this.ctx);
+		this.player.draw(this.ctx);
 	}
 	private render = ():void =>
 	{
 		let delta:number = this.clock.getElapsedTime();
 
-		this.ctx.fillStyle = "rgb(0, 128, 0)";
-		this.ctx.fillRect(-this.canvas.width / 2, 0, this.canvas.width, this.canvas.height);
 		this.update(delta);
-		this.road.draw(this.ctx);
+		this.draw();
 		this.clock.restart();
 		window.requestAnimationFrame(this.render);
 	}

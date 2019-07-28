@@ -1,11 +1,11 @@
-class Segment
+class Segment implements Projectable
 {
 	private static readonly DARK:string = "rgb(100, 100, 100)";
 	private static readonly LIGHT:string = "rgb(110, 110, 110)";
 	private static readonly RUMBLE_LIGHT:string = "white";
 	private static readonly RUMBLE_DARK:string = "darkred";
 	private static readonly LANES_NUMBER:number = 2;
-	private static readonly LANE_WIDTH:number = Road.WIDTH / 20;
+	private static readonly LANE_WIDTH:number = Road.WIDTH / 40;
 	public static readonly DEPTH:number = 8;
 	private readonly RUMBLE_COLOR:string;
 	private ground:Quadrilateral;
@@ -35,13 +35,13 @@ class Segment
 
 		for (let i:number = 0; i < Segment.LANES_NUMBER; i++) {
 			position = this.ground.getPosition().clone();
-			position.x += CHUNK_SIZE * (i + 1);
+			position.x += CHUNK_SIZE * (i + 1) - Segment.LANE_WIDTH / 2;
 			this.lanes[i] = new Quadrilateral(position, SIZE, "white");
 		}
 	}
 	private addRumbles():void
 	{
-		const SIZE:Vector3 = new Vector3(Segment.LANE_WIDTH * 2, 0, Segment.DEPTH);
+		const SIZE:Vector3 = new Vector3(Segment.LANE_WIDTH * 4, 0, Segment.DEPTH);
 		const LEFT:Vector3 = new Vector3(-Road.WIDTH / 2 - SIZE.x, 0, this.ground.getPosition().z);
 		const RIGHT:Vector3 = new Vector3(Road.WIDTH / 2, 0, this.ground.getPosition().z);
 

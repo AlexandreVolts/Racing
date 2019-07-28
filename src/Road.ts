@@ -1,4 +1,4 @@
-class Road
+class Road implements Projectable
 {
 	public static readonly WIDTH:number = 2000 * 2;
 	public static readonly RUMBLE_LENGTH:number = 3;
