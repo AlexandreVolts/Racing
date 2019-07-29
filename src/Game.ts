@@ -1,5 +1,6 @@
 class Game
 {
+	private background:Background;
 	private camera:Camera = new Camera();
 	private canvas:HTMLCanvasElement;
 	private clock:Clock = new Clock();
@@ -15,11 +16,12 @@ class Game
 		this.ctx = canvas.getContext("2d");
 		this.ctx.imageSmoothingEnabled = false;
 		this.camera.setKeyboard(this.keyboard);
-		this.spriteLoader = new SpriteLoader(["assets/daisy.png"], this.initialise);
+		this.spriteLoader = new SpriteLoader(["assets/daisy.png", "assets/plains.png"], this.initialise);
 	}
 
 	private initialise = ():void =>
 	{
+		this.background = new Background(this.spriteLoader.get("assets/plains.png"), 2);
 		this.player = new Player(this.spriteLoader.get("assets/daisy.png"));
 		this.render();
 	}
@@ -38,6 +40,8 @@ class Game
 	}
 	private draw():void
 	{
+		this.ctx.clearRect(-this.canvas.width / 2, -this.canvas.height / 2, this.canvas.width, this.canvas.height);
+		this.background.draw(this.ctx);
 		this.ctx.fillStyle = "rgb(0, 128, 0)";
 		this.ctx.fillRect(-this.canvas.width / 2, 0, this.canvas.width, this.canvas.height);
 		this.road.draw(this.ctx);

@@ -9,6 +9,7 @@ class Player implements Projectable
 	constructor(skin:Spritesheet)
 	{
 		this.skin = skin;
+		this.skin.setNbTiles(new Vector2(12, 1));
 	}
 
 	public draw(ctx:CanvasRenderingContext2D):void
@@ -30,7 +31,7 @@ class Player implements Projectable
 	}
 	public turn(dir:number):void
 	{
-		this.skin.setState(dir != 0 ? 1 : 0);
+		this.skin.setState(new Vector2(dir != 0 ? 1 : 0));
 		this.skin.reverse(dir == -1);
 	}
 }

@@ -3,10 +3,12 @@ class Spritesheet
 	public position:Vector2 = new Vector2();
 	public size:Vector2 = new Vector2();
 	private img:HTMLImageElement;
-	private onLoad:Function;
-	private imgSize:Vector2 = new Vector2();
-	private state:number = 0;
 	private isReversed:boolean = false;
+	private imgSize:Vector2 = new Vector2();
+	private nbTiles:Vector2 = new Vector2(1, 1);
+	private onLoad:Function;
+	private state:Vector2 = new Vector2();
+	private tileSize:Vector2;
 	
 	constructor(path:string, onLoad:Function)
 	{
@@ -20,6 +22,7 @@ class Spritesheet
 	{
 		this.imgSize = new Vector2(this.img.width, this.img.height);
 		this.size = this.imgSize.clone();
+		this.tileSize = this.imgSize.clone();
 		this.onLoad();
 	}
 
@@ -29,20 +32,39 @@ class Spritesheet
 	}
 	public draw(ctx:CanvasRenderingContext2D)
 	{
-		let width:number = (this.imgSize.x / 12);
-
 		ctx.save();
 		if (this.isReversed)
 			this.position.x += this.size.x;
 		ctx.translate(this.position.x - this.size.x / 2, this.position.y - this.size.y / 2);
 		if (this.isReversed)
 			ctx.scale(-1, 1);
-		ctx.drawImage(this.img, this.state * width, 0, width, this.imgSize.y, 0, 0, this.size.x, this.size.y);
+		ctx.drawImage(this.img, this.tileSize.x * this.state.x, this.tileSize.y * this.state.y, 
+					this.tileSize.x, this.tileSize.y, 0, 0, this.size.x, this.size.y);
 		ctx.restore();
 	}
-	public setState(state:number)
+	public setNbTiles(nbTiles:Vector2):void
 	{
-		if (state < 12)
-			this.state = state;
+		if (nbTiles.x <= 0)
+			nbTiles.x = 1;
+		if (nbTiles.y <= 0)
+			nbTiles.y = 1;
+		this.nbTiles = nbTiles
+		this.tileSize.x = ~~(this.imgSize.x / nbTiles.x);
+		this.tileSize.y = ~~(this.imgSize.y / nbTiles.y);
+	}
+	public setState(state:Vector2)
+	{
+		this.setStateX(state.x);
+		this.setStateY(state.y);
+	}
+	public setStateX(state:number):void
+	{
+		if (state >= 0 && state <= this.nbTiles.x)
+			this.state.x = state;
+	}
+	public setStateY(state:number):void
+	{
+		if (state >= 0 && state <= this.nbTiles.y)
+			this.state.y = state;	
 	}
 }
