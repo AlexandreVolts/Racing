@@ -19,10 +19,11 @@ class Player implements Projectable
 	public move(camera:Camera):void
 	{
 		const Z_SPEED:number = camera.getSpeed().z;
-		const BUMP:number = Math.random() * (Z_SPEED / Utils.MAX_SPEED) * 2;
+		const BUMP:number = Math.random() * (Z_SPEED / Utils.MAX_SPEED) * 10;
 
+		this.position.x = camera.getPosition().x;
 		this.position.y = BUMP;
-		this.position.z = 100;
+		this.position.z = camera.getPosition().z + 10;
 	}
 	public project(camera:Camera):void
 	{

@@ -1,5 +1,6 @@
 class Background
 {
+	private static readonly WIDTH:number = 2500;
 	private readonly NB_LAYERS:number;
 	private skin:Spritesheet;
 	
@@ -7,6 +8,7 @@ class Background
 	{
 		this.NB_LAYERS = nbLayers;
 		this.skin = spritesheet;
+		this.skin.size.x = Background.WIDTH;
 		this.skin.setNbTiles(new Vector2(1, nbLayers));
 		this.resize();
 	}
@@ -20,7 +22,6 @@ class Background
 	}
 	public resize():void
 	{
-		this.skin.size.x = window.innerWidth;
 		this.skin.size.y = window.innerHeight * 0.5;
 		this.skin.position.y = - this.skin.size.y / 2;
 	}

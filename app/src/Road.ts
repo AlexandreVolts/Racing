@@ -2,7 +2,7 @@ class Road implements Projectable
 {
 	public static readonly WIDTH:number = 2000 * 2;
 	public static readonly RUMBLE_LENGTH:number = 3;
-	private static readonly LENGTH:number = 250;
+	private static readonly LENGTH:number = 75 * Road.RUMBLE_LENGTH;
 	private static readonly VISIBILITY:number = 50 * Road.RUMBLE_LENGTH;
 	private segments:Array<Segment> = new Array<Segment>();
 	private current:number = 0;

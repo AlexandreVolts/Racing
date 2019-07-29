@@ -14,7 +14,6 @@ class Game
 	{
 		this.canvas = canvas;
 		this.ctx = canvas.getContext("2d");
-		this.ctx.imageSmoothingEnabled = false;
 		this.camera.setKeyboard(this.keyboard);
 		this.spriteLoader = new SpriteLoader(["assets/daisy.png", "assets/plains.png"], this.initialise);
 	}
@@ -23,6 +22,7 @@ class Game
 	{
 		this.background = new Background(this.spriteLoader.get("assets/plains.png"), 2);
 		this.player = new Player(this.spriteLoader.get("assets/daisy.png"));
+		this.resize();
 		this.render();
 	}
 	private update(delta:number):void
@@ -55,5 +55,14 @@ class Game
 		this.draw();
 		this.clock.restart();
 		window.requestAnimationFrame(this.render);
+	}
+
+	public resize = ():void =>
+	{
+		this.canvas.width = window.innerWidth;
+		this.canvas.height = window.innerHeight;
+		this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+		this.ctx.imageSmoothingEnabled = false;
+		this.background.resize();
 	}
 }

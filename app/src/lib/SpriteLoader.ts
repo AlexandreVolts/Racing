@@ -7,8 +7,8 @@ class SpriteLoader
 	constructor(paths:Array<string>, callback:Function)
 	{
 		this.callback = callback;
-		this.len = paths.length - 1;
-		for (let i:number = this.len; i >= 0; i--) {
+		this.len = paths.length;
+		for (let i:number = this.len - 1; i >= 0; i--) {
 			this.spritesheets.set(paths[i], new Spritesheet(paths[i], this.load));
 		}
 	}

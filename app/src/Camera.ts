@@ -28,7 +28,9 @@ class Camera
 	
 	public moveHorizontally(delta:number, dir:number):void
 	{
-		this.position.x += this.speed.z * delta * dir;
+		const RATIO:number = ((this.speed.z + Utils.MAX_SPEED * 0.33) / Utils.MAX_SPEED);
+
+		this.position.x += Utils.HORIZONTAL_SPEED * RATIO * delta * dir;
 	}
 	public update(delta:number):void
 	{
