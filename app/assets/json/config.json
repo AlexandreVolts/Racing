@@ -1,0 +1,17 @@
+{
+	"backgrounds": [
+		{
+			"name": "Plains",
+			"path": "assets/img/plains.png",
+			"layers": 2,
+			"width": 2500
+		}
+	],
+	"characters": [
+		{
+			"name": "Daisy",
+			"path": "assets/img/daisy.png",
+			"layers": 12
+		}
+	]
+}

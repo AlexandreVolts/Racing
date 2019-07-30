@@ -1,5 +1,6 @@
 class Game
 {
+	private assetLoader:AssetLoader;
 	private background:Background;
 	private camera:Camera = new Camera();
 	private canvas:HTMLCanvasElement;
@@ -8,20 +9,19 @@ class Game
 	private keyboard:Keyboard = new Keyboard();
 	private player:Player;
 	private road:Road = new Road();
-	private spriteLoader:SpriteLoader;
 	
 	constructor(canvas:HTMLCanvasElement)
 	{
 		this.canvas = canvas;
 		this.ctx = canvas.getContext("2d");
 		this.camera.setKeyboard(this.keyboard);
-		this.spriteLoader = new SpriteLoader(["assets/daisy.png", "assets/plains.png"], this.initialise);
+		this.assetLoader = new AssetLoader(this.initialise);
 	}
 
 	private initialise = ():void =>
 	{
-		this.background = new Background(this.spriteLoader.get("assets/plains.png"), 2);
-		this.player = new Player(this.spriteLoader.get("assets/daisy.png"));
+		this.background = new Background(this.assetLoader.getJSONDescriptor(Background.Type.PLAINS));
+		this.player = new Player(this.assetLoader.get("assets/img/daisy.png"));
 		this.resize();
 		this.render();
 	}

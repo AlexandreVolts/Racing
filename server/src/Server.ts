@@ -5,7 +5,7 @@ import path = require("path");
 
 class Server
 {
-	private static readonly APP_DIR:string = __dirname + "/../../../app/";
+	private static readonly APP_DIR:string = __dirname + "/../../app/";
 	private readonly port:number;
 	private app:any = express();
 	private server:http.Server;
@@ -23,7 +23,7 @@ class Server
 			return;
 		}
 		console.log(`Server is listening on port ${this.port}.`);
-		this.app.use(express.static("views"));
+		this.app.use(express.static("../app"));
 		this.app.get("/", (req:any, res:any):void => {
 			req;
 			res.sendFile(path.resolve(Server.APP_DIR + "index.html"));

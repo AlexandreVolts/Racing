@@ -4,12 +4,12 @@ class Background
 	private readonly NB_LAYERS:number;
 	private skin:Spritesheet;
 	
-	constructor(spritesheet:Spritesheet, nbLayers:number)
+	constructor(descriptor:JSONDescriptor)
 	{
-		this.NB_LAYERS = nbLayers;
-		this.skin = spritesheet;
+		this.NB_LAYERS = descriptor.layers;
+		this.skin = descriptor.sprite;
 		this.skin.size.x = Background.WIDTH;
-		this.skin.setNbTiles(new Vector2(1, nbLayers));
+		this.skin.setNbTiles(new Vector2(1, this.NB_LAYERS));
 		this.resize();
 	}
 
@@ -24,5 +24,13 @@ class Background
 	{
 		this.skin.size.y = window.innerHeight * 0.5;
 		this.skin.position.y = - this.skin.size.y / 2;
+	}
+}
+
+module Background
+{
+	export enum Type
+	{
+		PLAINS = "Plains"
 	}
 }
