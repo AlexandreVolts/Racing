@@ -2,6 +2,7 @@
 
 class Player implements Projectable
 {
+	public static readonly CAMERA_DISTANCE:number = 10;
 	private static readonly SIZE:Vector2 = new Vector2(1000, 1000);
 	private position:Vector3 = new Vector3();
 	private skin:Spritesheet;
@@ -23,7 +24,7 @@ class Player implements Projectable
 
 		this.position.x = camera.getPosition().x;
 		this.position.y = BUMP;
-		this.position.z = camera.getPosition().z + 10;
+		this.position.z = camera.getPosition().z + Player.CAMERA_DISTANCE;
 	}
 	public project(camera:Camera):void
 	{

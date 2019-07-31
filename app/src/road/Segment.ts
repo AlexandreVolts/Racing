@@ -8,10 +8,10 @@ class Segment implements Projectable
 	private static readonly LANE_WIDTH:number = Road.WIDTH / 40;
 	public static readonly DEPTH:number = 8;
 	private readonly RUMBLE_COLOR:string;
-	private ground:Quadrilateral;
+	private ground:CurvedQuad;
 	private hasLanes:boolean = false;
-	private lanes:Array<Quadrilateral> = new Array<Quadrilateral>();
-	private rumbles:Array<Quadrilateral> = new Array<Quadrilateral>(2);
+	private lanes:Array<CurvedQuad> = new Array<CurvedQuad>();
+	private rumbles:Array<CurvedQuad> = new Array<CurvedQuad>(2);
 
 	constructor(index:number)
 	{
@@ -21,7 +21,7 @@ class Segment implements Projectable
 		
 		this.hasLanes = index % 2 == 0;
 		this.RUMBLE_COLOR = ~~((index / Road.RUMBLE_LENGTH) % 2) == 0 ? Segment.RUMBLE_LIGHT : Segment.RUMBLE_DARK;
-		this.ground = new Quadrilateral(POSITION, SIZE, COLOR);
+		this.ground = new CurvedQuad(POSITION, SIZE, COLOR);
 		if (this.hasLanes)
 			this.addLanes();
 		this.addRumbles();
@@ -36,7 +36,7 @@ class Segment implements Projectable
 		for (let i:number = 0; i < Segment.LANES_NUMBER; i++) {
 			position = this.ground.getPosition().clone();
 			position.x += CHUNK_SIZE * (i + 1) - Segment.LANE_WIDTH / 2;
-			this.lanes[i] = new Quadrilateral(position, SIZE, "white");
+			this.lanes[i] = new CurvedQuad(position, SIZE, "white");
 		}
 	}
 	private addRumbles():void
@@ -45,8 +45,8 @@ class Segment implements Projectable
 		const LEFT:Vector3 = new Vector3(-Road.WIDTH / 2 - SIZE.x, 0, this.ground.getPosition().z);
 		const RIGHT:Vector3 = new Vector3(Road.WIDTH / 2, 0, this.ground.getPosition().z);
 
-		this.rumbles[0] = new Quadrilateral(LEFT, SIZE, this.RUMBLE_COLOR);
-		this.rumbles[1] = new Quadrilateral(RIGHT, SIZE, this.RUMBLE_COLOR);
+		this.rumbles[0] = new CurvedQuad(LEFT, SIZE, this.RUMBLE_COLOR);
+		this.rumbles[1] = new CurvedQuad(RIGHT, SIZE, this.RUMBLE_COLOR);
 	}
 	private apply(func:Segment.ApplyType, arg:any):void
 	{
@@ -66,6 +66,20 @@ class Segment implements Projectable
 	{
 		this.apply(Segment.ApplyType.PROJECT, camera);
 	}
+	public regenerate(dir:Vector3, curve:number):void
+	{
+		dir.z = (Road.LENGTH - 1) * Segment.DEPTH;
+		this.apply(Segment.ApplyType.MOVE, dir);
+		this.apply(Segment.ApplyType.SET_CURVE, curve);
+	}
+	public getCurve():number
+	{
+		return (this.ground.getCurve());
+	}
+	public getPosition():Vector3
+	{
+		return (this.ground.getPosition());
+	}
 }
 
 module Segment
@@ -73,6 +87,8 @@ module Segment
 	export enum ApplyType
 	{
 		DRAW = "draw",
-		PROJECT = "project"
+		MOVE = "move",
+		PROJECT = "project",
+		SET_CURVE = "setCurve"
 	}
 }

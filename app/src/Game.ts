@@ -37,6 +37,7 @@ class Game
 		this.player.turn(dir);
 		this.player.move(this.camera);
 		this.player.project(this.camera);
+		this.background.move(this.road.getSegmentCurve(this.camera.getPosition().z + Player.CAMERA_DISTANCE));
 	}
 	private draw():void
 	{
