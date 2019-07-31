@@ -3,7 +3,7 @@
 class Camera
 {
 	public static readonly HEIGHT:number = 1000;
-	public static readonly FOV:number = 50;
+	public static readonly FOV:number = 50; // This value is a pure nonsense :(
 	public static readonly FOCAL_LENGTH:number = 1 / Math.tan(Utils.toRadians(Camera.FOV) / 2);
 	private keyboard:Keyboard;
 	private position:Vector3 = new Vector3(0, Camera.HEIGHT, 1);
@@ -26,10 +26,16 @@ class Camera
 			this.speed.z = 0;
 	}
 	
+	public applyCentrifugalForce(delta:number, curve:number):void
+	{
+		const RATIO:number = (this.speed.z / Utils.MAX_SPEED);
+		
+		this.position.x += curve * delta * RATIO * 2;
+	}
 	public moveHorizontally(delta:number, dir:number):void
 	{
 		const RATIO:number = ((this.speed.z + Utils.MAX_SPEED * 0.33) / Utils.MAX_SPEED);
-
+		
 		this.position.x += Utils.HORIZONTAL_SPEED * RATIO * delta * dir;
 	}
 	public update(delta:number):void

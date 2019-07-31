@@ -2,7 +2,7 @@
 
 class Player implements Projectable
 {
-	public static readonly CAMERA_DISTANCE:number = 10;
+	public static readonly CAMERA_DISTANCE:number = 500 / Camera.FOV;
 	private static readonly SIZE:Vector2 = new Vector2(1000, 1000);
 	private position:Vector3 = new Vector3();
 	private skin:Spritesheet;

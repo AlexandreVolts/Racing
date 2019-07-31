@@ -1,7 +1,7 @@
 class RoadMode
 {
 	private static readonly MIN_LENGTH:number = 10;
-	private static readonly MAX_LENGTH:number = 50;
+	private static readonly MAX_LENGTH:number = 75;
 	private static readonly MIN_CURVE_STRENGTH:number = 100;
 	private static readonly MAX_CURVE_STRENGTH:number = 200;
 	private static readonly CURVE_ENTER_RATIO:number = 0.33;
@@ -17,6 +17,15 @@ class RoadMode
 		this.setup();
 	}
 
+	private static ease(x:number):number
+	{
+		if (x < RoadMode.CURVE_ENTER_RATIO)
+			return (Utils.easeInOut(x));
+		else if (x > RoadMode.CURVE_HOLD_RATIO)
+			return (1 - Utils.easeInOut(x));
+		return (x);
+	}
+	
 	public setup():void
 	{
 		this.length = ~~Utils.rand(RoadMode.MIN_LENGTH, RoadMode.MAX_LENGTH);
@@ -31,15 +40,10 @@ class RoadMode
 	{
 		let dir:number = this.lastSegment.getPosition().x - segment.getPosition().x;
 		let curve:number = this.curveStrength;
-		let ratio:number = this.current / this.length;
+		let ratio:number = (this.length - this.current) / this.length;
 
 		dir += this.lastSegment.getCurve();
-		if (ratio < RoadMode.CURVE_ENTER_RATIO)
-			curve *= Utils.easeIn(ratio);
-		else if (ratio > RoadMode.CURVE_HOLD_RATIO)
-			curve *= Utils.easeOut(ratio);
-		else
-			curve *= ratio;
+		curve *= RoadMode.ease(ratio) * 10;
 		segment.regenerate(new Vector3(dir), curve);
 		this.current--;
 		if (this.current <= 0)

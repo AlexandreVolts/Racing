@@ -6,7 +6,7 @@ class Segment implements Projectable
 	private static readonly RUMBLE_DARK:string = "darkred";
 	private static readonly LANES_NUMBER:number = 2;
 	private static readonly LANE_WIDTH:number = Road.WIDTH / 40;
-	public static readonly DEPTH:number = 8;
+	public static readonly DEPTH:number = 14;
 	private readonly RUMBLE_COLOR:string;
 	private ground:CurvedQuad;
 	private hasLanes:boolean = false;

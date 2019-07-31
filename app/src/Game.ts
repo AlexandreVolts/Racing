@@ -27,17 +27,19 @@ class Game
 	}
 	private update(delta:number):void
 	{
+		const CURVE:number = this.road.getSegmentCurve(this.camera.getPosition().z + Player.CAMERA_DISTANCE);
 		let dir:number = 0;
 		
 		dir += this.keyboard.isKeyDown(Key.LEFT) ? -1 : 0;
 		dir += this.keyboard.isKeyDown(Key.RIGHT) ? 1 : 0;
+		this.camera.applyCentrifugalForce(delta, CURVE);
 		this.camera.moveHorizontally(delta, dir);
 		this.camera.update(delta);
 		this.road.project(this.camera);
 		this.player.turn(dir);
 		this.player.move(this.camera);
 		this.player.project(this.camera);
-		this.background.move(this.road.getSegmentCurve(this.camera.getPosition().z + Player.CAMERA_DISTANCE));
+		this.background.move(CURVE);
 	}
 	private draw():void
 	{

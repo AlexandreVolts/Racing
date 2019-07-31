@@ -2,8 +2,8 @@
 
 abstract class Utils
 {
-	public static readonly MAX_SPEED:number = 400;
-	public static readonly HORIZONTAL_SPEED:number = Road.WIDTH;
+	public static readonly MAX_SPEED:number = 350;
+	public static readonly HORIZONTAL_SPEED:number = 12500;
 	public static readonly ACCELERATION:number = Utils.MAX_SPEED / 2;
 	public static readonly BREAKING:number = -Utils.MAX_SPEED / 2;
 	public static readonly FRICTION:number = 0.9975;
@@ -27,11 +27,11 @@ abstract class Utils
 		return (1 - (1 - x) * x);
 	}
 	/**
-	 * Apply a cubic ease-in-out function and return the result
+	 * Apply a ease-in-out function and return the result
 	 * @param x A value between 0 and 1
 	 * @return a cubic eased-in-out value between 0 and 1
 	 */
-	public static easeInOutCubic(x:number):number
+	public static easeInOut(x:number):number
 	{
 		return (0.5 - Math.cos(x * Math.PI) / 2);
 	}
